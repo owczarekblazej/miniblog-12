@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1 th:text="${'Witaj, ' + name}">Witaj Jacek!</h1>
+<h1 >Witaj <span th:text="${name}"> Jacek</span></h1>
+
+<p th:if="${@userSessionService.user != null}" th:text="${@userSessionService.getUser().getEmail()}"></p><!--@ wewnątrz klamry  dolarem oznacza odwołanie do beana w springu-->
+<p th:if="${@userSessionService.user}" th:text="${@userSessionService.user.email}"></p> <!-- to samo co wyzej-->
+<p>Spring Security:</p>
+<p th:if="${@userContextService.loggedAs}" th:text="${@userContextService.loggedAs}"></p> <!-- to samo co wyzej-->
+
+</body>
+</html>

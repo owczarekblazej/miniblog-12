@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<!--    ~ mówi o odwóływaniu się do innych zasobów np. dysku-->
+    <th:block th:replace="~{includes/stylesAndScripts :: head}"></th:block>
+</head>
+<body>
+<h1>Witaj na mojej stronie!</h1>
+
+<p>Zalogowany: <span th:text="${userLogged}"></span></p>
+
+<form method="get" th:action="@{/hello}">
+    <!-- domyślna metodą jest get / jeśli nie podamy action to będzie submit na tą samą stronę z której jest submit-->
+    <!--    "/" oznacza że szukamy od roota scieżki strony-->
+    <!-- th: action ustawia odpowiedni kontekst aplikacji (czyli ścieżke: najpierw nazwa aplikacji potem root)  -->
+    <!--    @ oznacza "potraktuj zawartość jako url"-->
+    <!--    warto robić th: action i bezwzględne url czyli ze "/"-->
+    <!--    wrażliwe dane przesyłamy post-->
+    Podaj imie: <input type="text" name="nameParam">
+    <input type="submit" value="Wyślij">
+</form>
+
+<h2 th:text="${date}">2019</h2>
+
+
+<th:block th:replace="~{includes/stylesAndScripts :: enf_of_page}"></th:block>
+</body>
+</html>

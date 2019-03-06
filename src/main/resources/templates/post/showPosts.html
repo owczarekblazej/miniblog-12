@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<!-- $ oznacza odwoływanie się do zmiennych w modelu-->
+<!-- # oznacza odwoływanie się do określonego utila z expression utility objects-->
+<div th:each="post : ${posts}">
+    <h2>
+     <a th:text="${post.title}" th:href="@{/post/{qwe}(qwe=${post.id})}">Tytuł posta</a><!-- th text zastepuje zawartość znacznika dlatego przenieśliśmy z ha do a-->
+     <div><a th:text="${post.title}" th:href="@{/post(postId=${post.id})}">Tytuł posta</a></div><!-- th text zastepuje zawartość znacznika dlatego przenieśliśmy z ha do a-->
+    </h2>
+<!--    dates jest do starszej Javy, uzywa Date-->
+<!--    od javy 8 możemy użyc localdate poprzez temporals-->
+<!--    <span th:text="${#dates.format(post.added,'yyyy-MM-dd HH:mm')}">2019-03-02 11:07:10</span>-->
+    <span th:text="${#temporals.format(post.added,'yyyy-MM-dd HH:mm')}">2019-03-02 11:07:10</span>
+
+</div>
+
+</body>
+</html>
