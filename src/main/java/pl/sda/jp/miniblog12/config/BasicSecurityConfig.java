@@ -29,6 +29,8 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/post/add").hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers("/post/*/comment/add").hasAnyRole("USER","ADMIN")
+                .antMatchers("/users").hasAnyRole("ADMIN")
+                .antMatchers("/user/editUser/*").hasAnyRole("ADMIN")
                 .anyRequest().permitAll()
                 // teraz robimy kolejne rzeczy
                 .and()
@@ -40,7 +42,7 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .failureUrl("/login-by-spring?status=error")// niepoprawne logowanie przesyła nas na strone
-                .loginProcessingUrl("login-post-by-spring") // podajemy to URL na ktory przesyłamy submit
+                .loginProcessingUrl("/login-post-by-spring") // podajemy to URL na ktory przesyłamy submit
                 .defaultSuccessUrl("/hello"); // poprawne logowanie przesyła nas na strone
 
     }
@@ -57,7 +59,7 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
                 // w postaci loginu
                 .usersByUsernameQuery("SELECT u.email, u.password_hash, 1 FROM user u WHERE u.email = ? ")
                 // select gdzie 1 login i 2 rola
-                .authoritiesByUsernameQuery("SELECT u.email, r.role_name " +
+                .authoritiesByUsernameQuery("SELECT u.email, r.user_role " +
                         "FROM user u " +
                         "JOIN user_role ur ON u.id = ur.user_id " +
                         "JOIN role r ON ur.roles_id = r.id " +

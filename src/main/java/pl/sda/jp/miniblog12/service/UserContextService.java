@@ -6,6 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
 @Service
 public class UserContextService {
 
@@ -26,5 +28,24 @@ public class UserContextService {
             return false;
         }
        return authentication.getAuthorities().stream().map(a -> a.getAuthority()).anyMatch(s -> s.equals(roleName));
+    }
+
+    public boolean hasAnyRole(String... roleNames) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            return false;
+        }
+
+        return Arrays.stream(roleNames).anyMatch(roleName ->hasRole(roleName));
+    }
+
+    public boolean hasAllRoles(String... roleNames) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            return false;
+        }
+        return Arrays.stream(roleNames).allMatch(roleName ->hasRole(roleName));
     }
 }

@@ -7,29 +7,24 @@
 <body>
 
 <h1 th:text="${post.title}">Tytuł posta</h1>
-<span th:text="${post.added}">2019-03-02 11:07:10</span>  <!--// thymeleaf nadpisuje dane wewnątrz znacznika-->
+<span th:text="${post.added}">2019-03-02 11:07:10</span>  <!-- thymeleaf nadpisuje dane wewnątrz znacznika-->
 <p th:text="${post.postBody}"> Treść posta</p>
-<div>
+
+<div th:if="${showCommentForm}">
 <form method="post" th:action="@{/post/{id}/comment/add(id=${post.id})}">
-    Treść:<b th:if="${showCommentForm}">
+    Treść:<br>
     <textarea name="commentBody" ></textarea> <!-- tak bedzie nazywał się parametr który przekazujemy-->
-    <input type="hidden" th:value="${post.id}" name="postId">
+    <input type="hidden" name="postId" th:value="${post.id}" >
     <input type="submit" value="Dodaj komentarz">
 </form>
-
-<div>
+</div>
 
 <h2>Lista komentarzy:</h2>
 <p th:each="comment : ${comments}">
     <span th:text="${comment.commentBody}"> Komentarz </span>
     <br><span th:text="${comment.added}"> Komentarz </span>
-
-
 </p>
 
-</div>
 
-
-</div>
 </body>
 </html>

@@ -81,7 +81,7 @@ public class PostController {
                                        ) {
 
         postService.addNewComment(Long.parseLong(id),userContextService.getLoggedAs(),commentBody);
-        return "redirect:/post/,"+postId;
+        return "redirect:/post/"+postId;
     }
 
     private String prepareSinglePost(@PathVariable String postId, Model model) {
@@ -92,10 +92,8 @@ public class PostController {
             return "post/postNotFound";
         }
 
-
-
-        boolean showCommentForm = userContextService.getLoggedAs() != null && userContextService.hasRole("ROLE_USER");
-        model.addAttribute(showCommentForm);
+        boolean showCommentForm = userContextService.getLoggedAs() != null && userContextService.hasAllRoles("ROLE_USER","ROLE_ADMIN");
+        model.addAttribute("showCommentForm", showCommentForm);
 
         Optional<Post> postOptional = postService.getSinglePost(Long.valueOf(postId));
         if (postOptional.isPresent() == false) {

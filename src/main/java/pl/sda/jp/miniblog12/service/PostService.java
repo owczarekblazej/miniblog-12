@@ -38,7 +38,7 @@ public class PostService {
 
     public Optional<Post> getSinglePost(Long postId) { // najlepiej używać optionala
         return postRepository.findById(postId);
-        // ewnetualnie może zwracać klasę dającą nulla ale trzeba użyć metody Optional.ofNullable,
+        // ewentualnie może zwracać klasę dającą nulla ale trzeba użyć metody Optional.ofNullable,
         // aby przekonwertować na optionala
 //        Post one = postRepository.getOne(postId);
 //        return Optional.ofNullable(one);

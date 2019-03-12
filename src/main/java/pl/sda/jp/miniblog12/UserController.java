@@ -4,15 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import pl.sda.jp.miniblog12.entity.User;
+import pl.sda.jp.miniblog12.form.UserEditForm;
 import pl.sda.jp.miniblog12.form.UserRegisterForm;
 import pl.sda.jp.miniblog12.service.UserService;
 import pl.sda.jp.miniblog12.service.UserSessionService;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -84,5 +85,47 @@ public class UserController {
     public String logoutForm(){
         userSessionService.logout();
         return "user/logoutForm";
+    }
+
+    @GetMapping("/users")
+    public String showAllUsers(Model model) {
+        List<User> allUsers = userService.getAllUsers();
+        model.addAttribute("users", allUsers);
+        return "user/showUsers";
+    }
+
+    @GetMapping("/user/{userId}")
+    public String showSingleUser(@PathVariable String userId, Model model) {
+
+        Optional<User> userOptional = userService.getSingleUser(Long.valueOf(userId));
+        if(userOptional.isPresent()== false){
+            return "/user/userNotFound";
+        }
+
+        model.addAttribute("user",userOptional.get());
+
+        return "user/showSingleUser";
+    }
+
+    @GetMapping("/user/editUser/{userId}")
+    public String showEditForm(@PathVariable String userId, Model model) {
+        Optional<User> userOptional = userService.getSingleUser(Long.valueOf(userId));
+        if(userOptional.isPresent()== false){
+            return "user/userNotFound";
+        }
+        model.addAttribute("user", userOptional.get());
+        model.addAttribute("newUserEditForm", new UserEditForm());
+        return "/user/editUser";
+    }
+
+    @PostMapping("/user/editUser/{userId}")
+    public String handleUserEditForm(@PathVariable String userId, @ModelAttribute @Valid UserEditForm userEditForm, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            return "user/editUser";
+        }
+
+        userService.editUser(userEditForm, Long.valueOf(userId));
+
+        return "redirect:/user/"+userId;
     }
 }

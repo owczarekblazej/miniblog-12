@@ -6,11 +6,13 @@ import org.springframework.stereotype.Service;
 import pl.sda.jp.miniblog12.config.BasicConfig;
 import pl.sda.jp.miniblog12.entity.Role;
 import pl.sda.jp.miniblog12.entity.User;
+import pl.sda.jp.miniblog12.form.UserEditForm;
 import pl.sda.jp.miniblog12.form.UserRegisterForm;
 import pl.sda.jp.miniblog12.repository.RoleRepository;
 import pl.sda.jp.miniblog12.repository.UserRepository;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -59,4 +61,21 @@ public class UserService {
         user.addRole(role);
     }
 
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public Optional<User> getSingleUser(Long userId) {
+        return userRepository.findById(userId);
+    }
+
+    public void editUser(UserEditForm userEditForm, Long userId) {
+
+        User user = userRepository.findById(userId).orElseGet(User::new);
+
+        user.setFirstName(userEditForm.getFirstName());
+        user.setLastName(userEditForm.getLastName());
+
+        userRepository.save(user);
+    }
 }

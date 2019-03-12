@@ -8,6 +8,7 @@
 
 <!-- $ oznacza odwoływanie się do zmiennych w modelu-->
 <!-- # oznacza odwoływanie się do określonego utila z expression utility objects-->
+<!-- @ oznacza tworzenie url-->
 <div th:each="post : ${posts}">
     <h2>
      <a th:text="${post.title}" th:href="@{/post/{qwe}(qwe=${post.id})}">Tytuł posta</a><!-- th text zastepuje zawartość znacznika dlatego przenieśliśmy z ha do a-->
